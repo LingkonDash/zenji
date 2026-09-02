@@ -6,3 +6,13 @@
   --color-muted: #4B4B4B;        /* Dark gray used for secondary labels, breadcrumbs, and subtle borders */
   --color-subtle: #9D9D9D;       /* Light gray used for strike-through original prices and inactive text */
 }
+
+@theme inline {
+  --font-sans: var(--font-ibm-plex-mono);
+  --font-anton: var(--font-anton);
+}
+
+html,
+body {
+  font-family: var(--font-ibm-plex-mono);
+}

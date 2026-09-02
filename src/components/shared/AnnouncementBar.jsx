@@ -1,0 +1,95 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+const MESSAGES = [
+  "New drop: Blue Flame Tee now available",
+  "Limited stock",
+  "The Origin Drop collection live",
+  "Free shipping Australia-wide on orders over A$100",
+];
+
+export default function AnnouncementBar() {
+  const containerRef = useRef(null);
+  const singleTrackRef = useRef(null);
+  const tweenRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const singleTrack = singleTrackRef.current;
+    if (!container || !singleTrack) return;
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    const initAnimation = () => {
+      // Kill existing tween before recalculating
+      if (tweenRef.current) {
+        tweenRef.current.kill();
+      }
+
+      // Reset position for calculation
+      gsap.set(container, { x: 0 });
+
+      // Measure the exact pixel width of ONE set of messages
+      const singleSetWidth = singleTrack.offsetWidth;
+
+      if (singleSetWidth === 0) return;
+
+      // Animate exactly the width of one set.
+      // Once it moves -singleSetWidth px, set 2 moves into set 1's position seamlessly.
+      tweenRef.current = gsap.to(container, {
+        x: -singleSetWidth,
+        duration: singleSetWidth / 42, // Consistent ~42px/sec speed
+        ease: "none",
+        repeat: -1,
+      });
+    };
+
+    initAnimation();
+
+    // Recalculate on window resize to preserve seamless looping across screen sizes
+    window.addEventListener("resize", initAnimation);
+
+    return () => {
+      tweenRef.current?.kill();
+      window.removeEventListener("resize", initAnimation);
+    };
+  }, []);
+
+  const Track = ({ ref, ariaHidden }) => (
+    <div ref={ref} className="flex shrink-0 items-center" aria-hidden={ariaHidden}>
+      {MESSAGES.map((msg, i) => (
+        <span key={i} className="flex items-center">
+          <span className="px-4 whitespace-nowrap">{msg}</span>
+          <span className="text-white/40" aria-hidden="true">
+            •
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+
+  return (
+    <div
+      className="relative h-9 overflow-hidden bg-secondary text-white"
+      role="marquee"
+      aria-label="Store announcements"
+      onMouseEnter={() => tweenRef.current?.pause()}
+      onMouseLeave={() => tweenRef.current?.resume()}
+    >
+      <div
+        ref={containerRef}
+        className="flex h-full w-max items-center whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.14em] will-change-transform"
+      >
+        {/* Render 3 track copies so ultra-wide screens never experience gaps */}
+        <Track ref={singleTrackRef} ariaHidden={false} />
+        <Track ariaHidden={true} />
+        <Track ariaHidden={true} />
+      </div>
+    </div>
+  );
+}
