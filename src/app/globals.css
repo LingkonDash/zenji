@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #0B0404;      /* Deep black used for the navbar background, main titles, and card footers */
+  --color-secondary: #BC0100;    /* Crimson red used for sale badges, accent text, pricing, and notification dots */
+  --color-muted: #4B4B4B;        /* Dark gray used for secondary labels, breadcrumbs, and subtle borders */
+  --color-subtle: #9D9D9D;       /* Light gray used for strike-through original prices and inactive text */
+}

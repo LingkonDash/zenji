@@ -1,1 +1,1 @@
-main page: https://zenji.shop/
+main site: https://zenji.shop/
