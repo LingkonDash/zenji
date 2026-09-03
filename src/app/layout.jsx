@@ -2,6 +2,7 @@ import { Anton, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AnnouncementBar from "@/components/shared/AnnouncementBar";
 import Navbar from "@/components/shared/nav/Navbar";
+import Footer from "@/components/shared/Footer";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         <main>
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );

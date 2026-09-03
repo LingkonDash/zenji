@@ -89,8 +89,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <OriginDropSection data={DATA} />
       <BookStackSection data={DATA.slice(0, 4)} />
+      <OriginDropSection data={DATA} />
       <HeroTwo data={DATA} />
       <EthosSection />
     </>
