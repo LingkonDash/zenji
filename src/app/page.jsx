@@ -3,6 +3,8 @@ import EthosSection from "@/components/home/EthosSection";
 import Hero from "@/components/home/Hero";
 import HeroTwo from "@/components/home/HeroTwo";
 import OriginDropSection from "@/components/home/OriginDropSection";
+import RestockSection from "@/components/home/RestockSection";
+import ShopSection from "@/components/home/ShopSection";
 
 
 const DATA = [
@@ -92,6 +94,8 @@ export default function Home() {
       <BookStackSection data={DATA.slice(0, 4)} />
       <OriginDropSection data={DATA} />
       <HeroTwo data={DATA} />
+      <ShopSection products ={DATA}/>
+      {/* <RestockSection /> */}
       <EthosSection />
     </>
   );

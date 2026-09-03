@@ -86,7 +86,7 @@ export default function BookStackSection({ data }) {
 
       {/* Section Header */}
       <div className="relative z-20 text-center max-w-xl mx-auto mt-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/30 rounded-full mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/30 rounded-none mb-2">
           <Sparkles className="w-3.5 h-3.5 text-secondary" />
           <span className="text-[10px] font-sans tracking-widest text-secondary uppercase font-bold">
             SYSTEM // ZENJI_VISUAL_ARCHIVE
@@ -109,7 +109,7 @@ export default function BookStackSection({ data }) {
             <div
               key={item.id}
               ref={(el) => (cardsRef.current[index] = el)}
-              className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden border border-white/15 bg-primary flex flex-col justify-end transition-colors duration-300 hover:border-white/30"
+              className="absolute inset-0 w-full h-full rounded-none overflow-hidden border border-white/15 bg-primary flex flex-col justify-end transition-colors duration-300 hover:border-white/30"
               style={{
                 zIndex: index + 1,
                 boxShadow: "0px 0px 0px rgba(0,0,0,0)",
@@ -133,11 +133,11 @@ export default function BookStackSection({ data }) {
 
               {/* Page Number & Sale Ribbon */}
               <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                <span className="px-3 py-1 bg-primary/80 backdrop-blur-md border border-white/20 text-xs font-sans tracking-widest text-white rounded-md">
+                <span className="px-3 py-1 bg-primary/80 backdrop-blur-md border border-white/20 text-xs font-sans tracking-widest text-white rounded-none">
                   VOL. 0{index + 1}
                 </span>
                 {isOnSale && (
-                  <span className="flex items-center gap-1 px-3 py-1 bg-secondary text-white text-xs font-sans font-bold tracking-widest uppercase rounded-md">
+                  <span className="flex items-center gap-1 px-3 py-1 bg-secondary text-white text-xs font-sans font-bold tracking-widest uppercase rounded-none">
                     <Flame className="w-3 h-3 fill-white" />
                     SALE
                   </span>
@@ -172,7 +172,7 @@ export default function BookStackSection({ data }) {
 
                   <Link
                     href={`/drop/${item.id}`}
-                    className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary font-sans text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-secondary hover:text-white transition-all duration-300"
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary font-sans text-xs font-bold uppercase tracking-wider rounded-none hover:bg-secondary hover:text-white transition-all duration-300"
                   >
                     <span>VIEW PIECE</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

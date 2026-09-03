@@ -56,19 +56,28 @@ export default function OriginDropSection({ data }) {
             </div>
 
             {/* Section Header */}
-            <div className="relative z-20 flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-4 bg-[#0B0404] px-4 md:px-8 mx-4 md:mx-8 rounded-xl shrink-0">
+            <div className="relative z-20 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-4 bg-[#0B0404] px-4 md:px-8 mx-4 md:mx-8 shrink-0">
                 <div>
                     <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#BC0100]">
                         <Flame className="w-4 h-4 animate-pulse" />
                         <span>COLLECTION // THE_ORIGIN_DROP</span>
                     </div>
-                    <h2 className="font-anton text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-wider text-white mt-1">
+                    <h2 className="font-anton leading-[0.88] text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-wider text-white mt-1">
                         LIMITED SALES
                     </h2>
                 </div>
-                <p className="text-xs font-mono text-[#9D9D9D] max-w-xs mt-2 md:mt-0">
-                    HEAVYWEIGHT COTTON ARCHIVAL EDITIONS. ONCE THE ALLOCATION IS EXHAUSTED, THEY ARE RETIRED.
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <p className="text-xs font-mono text-[#9D9D9D] max-w-xs">
+                        HEAVYWEIGHT COTTON ARCHIVAL EDITIONS. ONCE THE ALLOCATION IS EXHAUSTED, THEY ARE RETIRED.
+                    </p>
+                    <Link
+                        href="/collection"
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-white/20 bg-white/5 hover:bg-[#BC0100] hover:border-[#BC0100] text-white hover:text-black font-mono text-xs uppercase tracking-widest font-semibold transition-all duration-300 rounded-none shrink-0"
+                    >
+                        <span>SEE ALL</span>
+                        <span aria-hidden="true">→</span>
+                    </Link>
+                </div>
             </div>
 
             {/* Horizontal Scroll Track */}
@@ -83,15 +92,15 @@ export default function OriginDropSection({ data }) {
                         return (
                             <div
                                 key={item.id}
-                                className="group relative w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] h-[480px] md:h-[calc(100vh-220px)] max-h-[640px] flex-shrink-0 flex flex-col justify-between bg-[#0B0404] border border-white/10 hover:border-[#BC0100]/60 transition-all duration-500 rounded-xl overflow-hidden shadow-2xl"
+                                className="group relative w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] h-[480px] md:h-[calc(100vh-220px)] max-h-[640px] flex-shrink-0 flex flex-col justify-between bg-[#0B0404] border border-white/10 hover:border-[#BC0100]/60 transition-all duration-500 rounded-none overflow-hidden shadow-2xl"
                             >
                                 {/* Badge Overlay */}
                                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                                    <span className="px-3 py-1 bg-[#0B0404]/80 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase rounded-full">
+                                    <span className="px-3 py-1 bg-[#0B0404]/80 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase rounded-none">
                                         0{index + 1} / 0{data.length}
                                     </span>
                                     {isOnSale && (
-                                        <span className="px-3 py-1 bg-[#BC0100] text-white text-[10px] font-mono font-bold tracking-widest uppercase rounded-full animate-pulse">
+                                        <span className="px-3 py-1 bg-[#BC0100] text-white text-[10px] font-mono font-bold tracking-widest uppercase rounded-none animate-pulse">
                                             SALE
                                         </span>
                                     )}
@@ -118,7 +127,7 @@ export default function OriginDropSection({ data }) {
                                             </h3>
                                             <Link
                                                 href={`/drop/${item.id}`}
-                                                className="p-2 rounded-full border border-white/10 hover:border-[#BC0100] hover:bg-[#BC0100] text-white transition-all duration-300"
+                                                className="p-2 rounded-none border border-white/10 hover:border-[#BC0100] hover:bg-[#BC0100] text-white transition-all duration-300"
                                             >
                                                 <ArrowUpRight className="w-4 h-4" />
                                             </Link>

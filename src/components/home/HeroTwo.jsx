@@ -281,7 +281,7 @@ export default function HeroTwo({ data = [] }) {
 
           <Link
             href={`/collection`}
-            className="group relative inline-flex items-center gap-3 rounded-full bg-red-600 px-8 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 hover:bg-red-500 hover:scale-105 active:scale-95"
+            className="group relative inline-flex items-center gap-3 rounded-none bg-red-600 px-8 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 hover:bg-red-500 hover:scale-105 active:scale-95"
           >
             Shop This Piece
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
