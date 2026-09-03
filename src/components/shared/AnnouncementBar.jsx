@@ -26,24 +26,19 @@ export default function AnnouncementBar() {
     if (prefersReduced) return;
 
     const initAnimation = () => {
-      // Kill existing tween before recalculating
       if (tweenRef.current) {
         tweenRef.current.kill();
       }
 
-      // Reset position for calculation
       gsap.set(container, { x: 0 });
 
-      // Measure the exact pixel width of ONE set of messages
       const singleSetWidth = singleTrack.offsetWidth;
 
       if (singleSetWidth === 0) return;
 
-      // Animate exactly the width of one set.
-      // Once it moves -singleSetWidth px, set 2 moves into set 1's position seamlessly.
       tweenRef.current = gsap.to(container, {
         x: -singleSetWidth,
-        duration: singleSetWidth / 42, // Consistent ~42px/sec speed
+        duration: singleSetWidth / 42,
         ease: "none",
         repeat: -1,
       });
@@ -51,7 +46,6 @@ export default function AnnouncementBar() {
 
     initAnimation();
 
-    // Recalculate on window resize to preserve seamless looping across screen sizes
     window.addEventListener("resize", initAnimation);
 
     return () => {
@@ -60,8 +54,9 @@ export default function AnnouncementBar() {
     };
   }, []);
 
-  const Track = ({ ref, ariaHidden }) => (
-    <div ref={ref} className="flex shrink-0 items-center" aria-hidden={ariaHidden}>
+  // Renamed `ref` to `innerRef` so React passes it correctly
+  const Track = ({ innerRef, ariaHidden }) => (
+    <div ref={innerRef} className="flex shrink-0 items-center" aria-hidden={ariaHidden}>
       {MESSAGES.map((msg, i) => (
         <span key={i} className="flex items-center">
           <span className="px-4 whitespace-nowrap">{msg}</span>
@@ -85,8 +80,7 @@ export default function AnnouncementBar() {
         ref={containerRef}
         className="flex h-full w-max items-center whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.14em] will-change-transform"
       >
-        {/* Render 3 track copies so ultra-wide screens never experience gaps */}
-        <Track ref={singleTrackRef} ariaHidden={false} />
+        <Track innerRef={singleTrackRef} ariaHidden={false} />
         <Track ariaHidden={true} />
         <Track ariaHidden={true} />
       </div>
