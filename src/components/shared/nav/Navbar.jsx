@@ -36,19 +36,59 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
   const isHome = pathname === "/";
 
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    if (!isHome) return;
+    lastScrollY.current = Math.max(0, window.scrollY);
 
-    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      const currentScrollY = Math.max(0, window.scrollY);
+      const scrollDiff = currentScrollY - lastScrollY.current;
+
+      if (isHome) {
+        setScrolled(currentScrollY > SCROLL_THRESHOLD);
+      }
+
+      if (currentScrollY <= SCROLL_THRESHOLD) {
+        setVisible(true);
+      } else if (scrollDiff > 8) {
+        setVisible(false);
+      } else if (scrollDiff < -8) {
+        setVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
+
+  // Make navbar visible when mouse or touch gets close to top of viewport
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      const clientY = e.touches ? e.touches[0]?.clientY : e.clientY;
+      if (clientY !== undefined && clientY <= 80) {
+        setVisible(true);
+      }
+    };
+
+    window.addEventListener("mousemove", handlePointerMove, { passive: true });
+    window.addEventListener("touchmove", handlePointerMove, { passive: true });
+    window.addEventListener("touchstart", handlePointerMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handlePointerMove);
+      window.removeEventListener("touchmove", handlePointerMove);
+      window.removeEventListener("touchstart", handlePointerMove);
+    };
+  }, []);
 
   // Focus the input every time the overlay opens, not just on first mount —
   // the field stays in the DOM (opacity/translate driven) so a plain
@@ -66,6 +106,7 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
   }, [searchOpen]);
 
   const solid = !isHome || scrolled;
+  const isVisible = visible || mobileOpen || searchOpen || moreOpen;
 
   const isActive = (href) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -80,7 +121,9 @@ export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 transition-colors duration-500 ${
+        className={`sticky top-0 z-50 transition-all duration-300 ease-in-out ${
+          isVisible ? "translate-y-0" : "-translate-y-full pointer-events-none"
+        } ${
           solid
             ? "border-b border-white/10 bg-primary"
             : "border-b border-transparent bg-transparent"

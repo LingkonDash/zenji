@@ -10,6 +10,25 @@ const MESSAGES = [
   "Free shipping Australia-wide on orders over A$100",
 ];
 
+function Track({ innerRef, ariaHidden }) {
+  return (
+    <div
+      ref={innerRef}
+      className="flex shrink-0 items-center"
+      aria-hidden={ariaHidden}
+    >
+      {MESSAGES.map((msg, i) => (
+        <span key={i} className="flex items-center">
+          <span className="px-4 whitespace-nowrap">{msg}</span>
+          <span className="text-white/40" aria-hidden="true">
+            •
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function AnnouncementBar() {
   const containerRef = useRef(null);
   const singleTrackRef = useRef(null);
@@ -46,6 +65,10 @@ export default function AnnouncementBar() {
 
     initAnimation();
 
+    if (document.fonts) {
+      document.fonts.ready.then(initAnimation);
+    }
+
     window.addEventListener("resize", initAnimation);
 
     return () => {
@@ -54,23 +77,9 @@ export default function AnnouncementBar() {
     };
   }, []);
 
-  // Renamed `ref` to `innerRef` so React passes it correctly
-  const Track = ({ innerRef, ariaHidden }) => (
-    <div ref={innerRef} className="flex shrink-0 items-center" aria-hidden={ariaHidden}>
-      {MESSAGES.map((msg, i) => (
-        <span key={i} className="flex items-center">
-          <span className="px-4 whitespace-nowrap">{msg}</span>
-          <span className="text-white/40" aria-hidden="true">
-            •
-          </span>
-        </span>
-      ))}
-    </div>
-  );
-
   return (
     <div
-      className="relative h-9 overflow-hidden bg-secondary text-white"
+      className="relative z-40 h-9 overflow-hidden bg-secondary text-white"
       role="marquee"
       aria-label="Store announcements"
       onMouseEnter={() => tweenRef.current?.pause()}
@@ -81,6 +90,9 @@ export default function AnnouncementBar() {
         className="flex h-full w-max items-center whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.14em] will-change-transform"
       >
         <Track innerRef={singleTrackRef} ariaHidden={false} />
+        <Track ariaHidden={true} />
+        <Track ariaHidden={true} />
+        <Track ariaHidden={true} />
         <Track ariaHidden={true} />
         <Track ariaHidden={true} />
       </div>

@@ -26,13 +26,12 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${anton.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col h-[200vh]">
+      <body className="min-h-full flex flex-col">
         <AnnouncementBar />
         <Navbar cartCount={2} wishlistCount={3} />
         <main>
           {children}
         </main>
-
       </body>
     </html>
   );

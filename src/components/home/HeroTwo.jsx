@@ -6,92 +6,16 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 
-const DATA = [
-  {
-    id: "blue-flame-tee",
-    title: "Blue Flame Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Premium 240gsm heavyweight cotton tee featuring custom anime streetwear blue flame graphic artwork.",
-    price: "A$33.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Blue-flame.avif",
-    bgImage: "/images/hero/Blue-flame.avif",
-  },
-  {
-    id: "demon-blood-tee",
-    title: "Demon Blood Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Japanese-inspired warrior graphic on heavy oversized silhouette. Limited release drop.",
-    price: "A$33.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Demon-blood.avif",
-    bgImage: "/images/hero/Demon-blood.avif",
-  },
-  {
-    id: "will-of-the-sun-tee",
-    title: "Will Of The Sun Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "High-contrast anime graphic tee engineered for technical precision and street culture.",
-    price: "A$33.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Will-of-the-sun.avif",
-    bgImage: "/images/hero/Will-of-the-sun.avif",
-  },
-  {
-    id: "warrior-spirit-tee",
-    title: "Warrior Spirit Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Iconic samurai discipline artwork printed on 100% heavyweight cotton canvas structure.",
-    price: "A$33.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Warrior-spirit.avif",
-    bgImage: "/images/hero/Warrior-spirit.avif",
-  },
-  {
-    id: "bushido-tee",
-    title: "Bushido Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Minimalist streetwear front paired with a high-impact back anime design.",
-    price: "A$39.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Bushido.avif",
-    bgImage: "/images/hero/Bushido.avif",
-  },
-  {
-    id: "domain-expansion-tee",
-    title: "Domain Expansion Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Gamer-built anime graphic streetwear piece. No restocks, limited quantities.",
-    price: "A$39.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Domain-expansion.avif",
-    bgImage: "/images/hero/Domain-expansion.avif",
-  },
-  {
-    id: "water-breathing-tee",
-    title: "Water Breathing Tee",
-    collection: "THE_ORIGIN_DROP",
-    description:
-      "Fluid Japanese iconography and dark anime streetwear aesthetic.",
-    price: "A$39.99",
-    originalPrice: "A$39.99",
-    posterImage: "/images/hero/card/Water-breathing.avif",
-    bgImage: "/images/hero/Water-breathing.avif",
-  },
-];
 
 const AUTO_INTERVAL = 3800;
-const CENTER = Math.floor(DATA.length / 2);
 
-function getBaseTransform(i, activeIndex) {
-  const offset = i - CENTER;
+function getCenterIndex(length) {
+  return Math.floor((length || 0) / 2);
+}
 
+function getBaseTransform(i, activeIndex, centerIndex) {
+  const offset = i - centerIndex;
+  
   const cardSpacing = 115;
   const angleStep = 9;
   const curveDrop = 6.5;
@@ -107,11 +31,13 @@ function getBaseTransform(i, activeIndex) {
 }
 
 // Fixed stacking depth — center cards remain visually elevated without z-index jumping on hover
-function staticZ(i) {
-  return 50 - Math.abs(i - CENTER);
+function staticZ(i, centerIndex) {
+  return 50 - Math.abs(i - centerIndex);
 }
 
-export default function HeroTwo() {
+export default function HeroTwo({ data = [] }) {
+  const centerIndex = getCenterIndex(data.length);
+
   const rootRef = useRef(null);
   const ctxRef = useRef(null);
   const layerARef = useRef(null);
@@ -122,19 +48,20 @@ export default function HeroTwo() {
   const textRef = useRef(null);
   const intervalRef = useRef(null);
 
-  const [activeIndex, setActiveIndex] = useState(CENTER);
-  const [displayIndex, setDisplayIndex] = useState(CENTER);
+  const [activeIndex, setActiveIndex] = useState(centerIndex);
+  const [displayIndex, setDisplayIndex] = useState(centerIndex);
   const [paused, setPaused] = useState(false);
 
-  const active = DATA[displayIndex];
+  const active = data[displayIndex] || data[0];
 
   // Scatter intro effect
   useEffect(() => {
+    if (!data.length) return;
     ctxRef.current = gsap.context(() => {}, rootRef);
 
-    const finals = DATA.map((_, i) => getBaseTransform(i, activeIndex));
+    const finals = data.map((_, i) => getBaseTransform(i, activeIndex, centerIndex));
 
-    DATA.forEach((_, i) => {
+    data.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
       const b = finals[i];
@@ -147,12 +74,12 @@ export default function HeroTwo() {
         rotation: (Math.random() - 0.5) * 200,
         scale: 0.3,
         opacity: 0,
-        zIndex: staticZ(i),
+        zIndex: staticZ(i, centerIndex),
       });
     });
 
     const tl = gsap.timeline({ delay: 0.15 });
-    DATA.forEach((_, i) => {
+    data.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
       const b = finals[i];
@@ -176,17 +103,18 @@ export default function HeroTwo() {
 
   // Continuous auto-cycle interval
   useEffect(() => {
-    if (paused) return;
+    if (paused || !data.length) return;
     intervalRef.current = setInterval(() => {
-      setActiveIndex((i) => (i + 1) % DATA.length);
+      setActiveIndex((i) => (i + 1) % data.length);
     }, AUTO_INTERVAL);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [paused]);
+  }, [paused, data.length]);
 
   // Dynamic background image crossfade
   useEffect(() => {
+    if (!data[activeIndex]) return;
     if (isFirstBgRender.current) {
       isFirstBgRender.current = false;
       return;
@@ -195,7 +123,7 @@ export default function HeroTwo() {
     const back = frontIsA.current ? layerBRef.current : layerARef.current;
     if (!front || !back) return;
 
-    back.style.backgroundImage = `url(${DATA[activeIndex].bgImage})`;
+    back.style.backgroundImage = `url(${data[activeIndex].bgImage})`;
 
     ctxRef.current?.add(() => {
       gsap.to(back, { autoAlpha: 1, duration: 0.9, ease: "power2.inOut" });
@@ -203,7 +131,7 @@ export default function HeroTwo() {
     });
 
     frontIsA.current = !frontIsA.current;
-  }, [activeIndex]);
+  }, [activeIndex, data]);
 
   // Content text crossfade transition
   useEffect(() => {
@@ -228,10 +156,10 @@ export default function HeroTwo() {
 
   // Smooth card transform positioning on index switch
   useEffect(() => {
-    DATA.forEach((_, i) => {
+    data.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
-      const b = getBaseTransform(i, activeIndex);
+      const b = getBaseTransform(i, activeIndex, centerIndex);
       ctxRef.current?.add(() => {
         gsap.to(el, {
           x: b.x,
@@ -243,16 +171,16 @@ export default function HeroTwo() {
         });
       });
     });
-  }, [activeIndex]);
+  }, [activeIndex, data, centerIndex]);
 
   // Static z-index setup without dynamic hover overriding
   useEffect(() => {
-    DATA.forEach((_, i) => {
+    data.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
-      gsap.set(el, { zIndex: staticZ(i) });
+      gsap.set(el, { zIndex: staticZ(i, centerIndex) });
     });
-  }, []);
+  }, [data, centerIndex]);
 
   const handleCardEnter = useCallback((i) => {
     setPaused(true);
@@ -263,6 +191,8 @@ export default function HeroTwo() {
     setPaused(false);
   }, []);
 
+  if (!data.length || !active) return null;
+
   return (
     <section
       ref={rootRef}
@@ -272,7 +202,7 @@ export default function HeroTwo() {
       <div
         ref={layerARef}
         className="absolute inset-0 bg-cover bg-top scale-105"
-        style={{ backgroundImage: `url(${DATA[CENTER].bgImage})`, opacity: 1 }}
+        style={{ backgroundImage: `url(${data[centerIndex]?.bgImage})`, opacity: 1 }}
       />
       <div
         ref={layerBRef}
@@ -281,8 +211,8 @@ export default function HeroTwo() {
       />
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/50" />
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/20" />
 
       {/* Main Container */}
       <div className="relative z-10 flex h-full flex-col items-center justify-between pb-12 px-4 text-center">
@@ -306,7 +236,7 @@ export default function HeroTwo() {
           style={{ perspective: "1200px" }}
           onMouseLeave={handleFanLeave}
         >
-          {DATA.map((card, i) => (
+          {data.map((card, i) => (
             <button
               key={card.id}
               type="button"
@@ -325,7 +255,7 @@ export default function HeroTwo() {
                 fill
                 sizes="(max-width: 768px) 160px, 175px"
                 className="object-cover"
-                priority={i === CENTER}
+                priority={i === centerIndex}
               />
             </button>
           ))}
@@ -360,7 +290,7 @@ export default function HeroTwo() {
 
         {/* Navigation Dots */}
         <div className="mt-6 flex items-center gap-2">
-          {DATA.map((_, i) => (
+          {data.map((_, i) => (
             <button
               key={i}
               onClick={() => handleCardEnter(i)}

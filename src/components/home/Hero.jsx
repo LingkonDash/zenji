@@ -106,7 +106,7 @@ export default function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative -mt-[72px] aspect-[4/5] min-h-[520px] w-full overflow-hidden bg-primary sm:aspect-[16/10] lg:aspect-auto lg:h-[100svh]"
+      className="relative -mt-[108px] aspect-[4/5] min-h-[520px] w-full overflow-hidden bg-primary sm:aspect-[16/10] lg:aspect-auto lg:h-[100svh]"
     >
       {/* Video */}
       <video
@@ -125,7 +125,7 @@ export default function Hero() {
       <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/55 to-transparent lg:h-48" />
 
       {/* Content */}
-      <div className="relative flex h-full flex-col justify-end px-6 pb-14 sm:px-10 sm:pb-16 lg:justify-centers lg:p-16 lg:pb-0 xl:p-20">
+      <div className="relative flex h-full flex-col justify-end px-6 pb-14 sm:px-10 sm:pb-16 lg:justify-end lg:p-16 lg:pb-16 xl:p-20 xl:pb-20">
         <div className="max-w-xl xl:max-w-3xl">
           <p
             ref={eyebrowRef}
