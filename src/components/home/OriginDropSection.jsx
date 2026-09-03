@@ -67,7 +67,7 @@ export default function OriginDropSection({ data }) {
                     </h2>
                 </div>
                 <p className="text-xs font-mono text-[#9D9D9D] max-w-xs mt-2 md:mt-0">
-                    HEAVYWEIGHT COTTON ARCHIVAL PIECES. NO RESTOCKS ONCE EXHAUSTED.
+                    HEAVYWEIGHT COTTON ARCHIVAL EDITIONS. ONCE THE ALLOCATION IS EXHAUSTED, THEY ARE RETIRED.
                 </p>
             </div>
 

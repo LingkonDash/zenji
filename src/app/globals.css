@@ -9,7 +9,7 @@
 
 @theme inline {
   --font-sans: var(--font-ibm-plex-mono);
-  --font-anton: var(--font-anton);
+  --font-anton: var(--font-anton-face);
 }
 
 html,

@@ -220,12 +220,12 @@ export default function HeroTwo({ data = [] }) {
         {/* Collections Header & Product Title */}
         <div className="flex flex-col items-center">
           <span className="text-[10px] md:text-xs font-bold tracking-[0.35em] text-red-500 uppercase mb-1">
-            COLLECTIONS WE HAVE
+            OUR COLLECTIONS
           </span>
           <p className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] text-white/50 uppercase mb-1 md:mb-10">
             Collection // {active.collection}
           </p>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight uppercase">
+          <h1 className="font-anton text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white tracking-tight uppercase">
             {active.title}
           </h1>
         </div>

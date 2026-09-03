@@ -96,7 +96,7 @@ export default function BookStackSection({ data }) {
           LOOKBOOK
         </h2>
         <p className="text-xs font-sans text-subtle mt-1">
-          SCROLL TO EXPLORE THE COLLECTION, FRAME BY FRAME
+          EXPLORE THE COLLECTION — FRAME BY FRAME
         </p>
       </div>
 

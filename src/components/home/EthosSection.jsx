@@ -100,10 +100,10 @@ export default function EthosSection() {
             ref={copyRef}
             className="font-sans text-sm md:text-base text-subtle leading-relaxed mt-8 max-w-md"
           >
-            We exist at the intersection of technical precision and cultural
-            expression. Our garments are engineered for those navigating an
-            increasingly fragmented world — built from Japanese craftsmanship,
-            anime culture, and modern streetwear.
+            We operate at the intersection of technical precision and cultural
+            identity. Every garment is conceived for those who navigate complexity
+            with intention — rooted in Japanese craftsmanship, shaped by anime
+            heritage, refined through modern streetwear discipline.
           </p>
         </div>
       </div>

@@ -6,7 +6,7 @@ import Navbar from "@/components/shared/nav/Navbar";
 const anton = Anton({
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-anton",
+  variable: "--font-anton-face",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({

@@ -152,8 +152,8 @@ export default function Hero() {
             ref={subRef}
             className="mt-6 max-w-sm font-sans text-[14px] leading-relaxed text-white/75 opacity-0 lg:mt-7 lg:max-w-md lg:text-base"
           >
-            Anime-driven streetwear built for the culture. Limited runs, made
-            to be worn hard and remembered longer.
+            Anime-driven streetwear forged for the culture. Limited production runs,
+            engineered to endure and impossible to forget.
           </p>
 
           <div
