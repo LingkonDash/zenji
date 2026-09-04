@@ -3,6 +3,7 @@ import "./globals.css";
 import AnnouncementBar from "@/components/shared/AnnouncementBar";
 import Navbar from "@/components/shared/nav/Navbar";
 import Footer from "@/components/shared/Footer";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -27,13 +28,15 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${anton.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <AnnouncementBar />
-        <Navbar cartCount={2} wishlistCount={3} />
-        <main>
-          {children}
-        </main>
-        <Footer />
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <SmoothScrollProvider>
+          <AnnouncementBar />
+          <Navbar cartCount={2} wishlistCount={3} />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import zenjiLogo from "@/images/zenji-outlook.png";
 
 const NAV_COLUMNS = [
@@ -39,8 +40,6 @@ const SOCIAL_LINKS = [
   { label: "TikTok", href: "#", Icon: TikTokIcon },
 ];
 
-// Kanji drifting slowly behind the wordmark — bushido register,
-// matches the manifesto section's "武士道" motif.
 const KANJI_GLYPHS = ["武", "士", "道", "龍", "影", "刃"];
 
 function Instagram({ className }) {
@@ -82,12 +81,6 @@ function TikTokIcon({ className }) {
   );
 }
 
-/**
- * Legendary ember field — rising sparks with occasional bright
- * comet-tail flares, plus faint drifting kanji glyphs, like sparks
- * and ash off a blade in the dark. Pauses off-screen and respects
- * prefers-reduced-motion.
- */
 function EmberCanvas() {
   const canvasRef = useRef(null);
 
@@ -111,6 +104,7 @@ function EmberCanvas() {
     const FLARE_RATIO = 0.16;
 
     function resize() {
+      if (!canvas.parentElement) return;
       const rect = canvas.parentElement.getBoundingClientRect();
       width = rect.width;
       height = rect.height;
@@ -163,7 +157,6 @@ function EmberCanvas() {
     function draw() {
       ctx.clearRect(0, 0, width, height);
 
-      // Drifting kanji, far behind everything
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       for (const g of glyphs) {
@@ -180,7 +173,6 @@ function EmberCanvas() {
         ctx.restore();
       }
 
-      // Embers + flares
       for (const p of embers) {
         p.prevY = p.y;
         p.y -= p.speed;
@@ -248,7 +240,10 @@ function EmberCanvas() {
       },
       { threshold: 0.05 }
     );
-    observer.observe(canvas.parentElement);
+
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
 
     if (reduceMotion) {
       draw();
@@ -276,8 +271,14 @@ function EmberCanvas() {
 
 export default function Footer() {
   const rootRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
+    // Register GSAP plugin safely on the client side
+    gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -305,54 +306,22 @@ export default function Footer() {
       ref={rootRef}
       className="relative w-full bg-primary text-white overflow-hidden border-t border-white/10"
     >
-      {/* Ember + kanji field */}
       <EmberCanvas />
 
-      {/* Breathing aura behind the centered wordmark */}
+      {/* Breathing aura styled directly with dynamic utilities to avoid style jsx hydration mismatch */}
       <div
-        className="footer-aura absolute inset-0 z-0 pointer-events-none"
+        className="absolute inset-0 z-0 pointer-events-none opacity-70 animate-[pulse_5s_ease-in-out_infinite] [background:radial-gradient(circle_at_50%_45%,rgba(188,1,0,0.16)_0%,rgba(188,1,0,0.06)_32%,rgba(11,4,4,0)_65%)]"
         aria-hidden="true"
       />
 
-      {/* Centered watermark */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none">
         <span className="font-anton text-[20vw] md:text-[13vw] leading-none tracking-tighter text-white/[0.05]">
           ZENJI
         </span>
       </div>
 
-      <style jsx>{`
-        .footer-aura {
-          background: radial-gradient(
-            circle at 50% 45%,
-            rgba(188, 1, 0, 0.16) 0%,
-            rgba(188, 1, 0, 0.06) 32%,
-            rgba(11, 4, 4, 0) 65%
-          );
-          animation: aura-breathe 5s ease-in-out infinite;
-        }
-        @keyframes aura-breathe {
-          0%,
-          100% {
-            opacity: 0.7;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.06);
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .footer-aura {
-            animation: none;
-          }
-        }
-      `}</style>
-
-      {/* Main content */}
       <div className="relative z-[2] px-6 md:px-16 lg:px-24 pt-20 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr_1fr] gap-14 md:gap-8">
-          {/* Brand column */}
           <div data-footer-reveal>
             <Link href="/" className="inline-flex items-center gap-2.5 mb-6 hover:scale-[1.02]">
               <Image
@@ -387,7 +356,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Nav columns */}
           {NAV_COLUMNS.map((col) => (
             <div key={col.heading} data-footer-reveal>
               <p className="font-sans text-[10px] tracking-[0.25em] text-muted uppercase mb-5">
@@ -410,11 +378,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="relative z-[2] border-t border-white/10 px-6 md:px-16 lg:px-24 py-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <p className="font-sans text-xs text-muted">
-            © {new Date().getFullYear()} ZENJI. All drops are final. No
+            © {mounted ? new Date().getFullYear() : "2026"} ZENJI. All drops are final. No
             restocks. Ever.
           </p>
 

@@ -1,60 +1,51 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { Flame, ArrowRight, Sparkles } from "lucide-react";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
 export default function BookStackSection({ data }) {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = cardsRef.current;
+  useGSAP(
+    () => {
+      gsap.config({ force3D: true });
+
+      const cards = cardsRef.current.filter(Boolean);
       const totalCards = cards.length;
 
-      // Pin the section while scrolling through cards
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: `+=${totalCards * 100}%`,
           pin: true,
+          pinType: "transform",
           scrub: 0.8,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
       cards.forEach((card, i) => {
-        if (i === 0) return; // Keep the first card anchored
+        if (i === 0) return;
 
-        // Slide card up from bottom and stack onto the pile
         tl.fromTo(
           card,
-          {
-            yPercent: 120,
-            rotateX: 10,
-            scale: 0.95,
-          },
-          {
-            yPercent: 0,
-            rotateX: 0,
-            scale: 1,
-            ease: "power2.out",
-            duration: 1,
-          },
+          { yPercent: 120, rotateX: 10, scale: 0.95 },
+          { yPercent: 0, rotateX: 0, scale: 1, ease: "power2.out", duration: 1 },
           `card-${i}`
         );
 
-        // Slightly scale down the card beneath and let the new card cast
-        // a soft shadow downward onto it (instead of blacking it out)
         if (i > 0) {
           tl.to(
             cards[i - 1],
@@ -67,10 +58,28 @@ export default function BookStackSection({ data }) {
           );
         }
       });
-    }, sectionRef);
 
-    return () => ctx.revert();
-  }, []);
+      const pendingImgs = Array.from(
+        sectionRef.current?.querySelectorAll("img") || []
+      ).filter((img) => !img.complete);
+
+      if (pendingImgs.length > 0) {
+        let loadedCount = 0;
+        const onImageLoad = () => {
+          loadedCount++;
+          if (loadedCount === pendingImgs.length) {
+            ScrollTrigger.refresh();
+          }
+        };
+
+        pendingImgs.forEach((img) => {
+          img.addEventListener("load", onImageLoad, { once: true });
+          img.addEventListener("error", onImageLoad, { once: true });
+        });
+      }
+    },
+    { scope: sectionRef, dependencies: [data] }
+  );
 
   return (
     <section
@@ -115,7 +124,6 @@ export default function BookStackSection({ data }) {
                 boxShadow: "0px 0px 0px rgba(0,0,0,0)",
               }}
             >
-              {/* Full Background Cover Art */}
               <div className="absolute inset-0 z-0">
                 <Image
                   src={item.bgImage}
@@ -125,13 +133,10 @@ export default function BookStackSection({ data }) {
                   sizes="(max-width: 1200px) 100vw, 800px"
                   className="object-cover object-center"
                 />
-                {/* Red Frame Border Line Accent */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-secondary z-20" />
-                {/* Darkness Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent" />
               </div>
 
-              {/* Page Number & Sale Ribbon */}
               <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
                 <span className="px-3 py-1 bg-primary/80 backdrop-blur-md border border-white/20 text-xs font-sans tracking-widest text-white rounded-none">
                   VOL. 0{index + 1}
@@ -144,7 +149,6 @@ export default function BookStackSection({ data }) {
                 )}
               </div>
 
-              {/* Card Footer Content Overlay */}
               <div className="relative z-10 p-6 md:p-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-4 bg-gradient-to-t from-primary via-primary/90 to-transparent pt-12">
                 <div className="max-w-md">
                   <span className="text-[10px] font-sans tracking-widest text-secondary uppercase block mb-1">
@@ -184,7 +188,6 @@ export default function BookStackSection({ data }) {
         })}
       </div>
 
-      {/* Footer Indicator */}
       <div className="relative z-20 flex items-center gap-2 text-xs font-sans text-muted">
         <span>[ SCROLL TO CONTINUE ]</span>
       </div>
