@@ -18,3 +18,32 @@ body {
   background-color: var(--color-primary);
   overscroll-behavior-y: none;
 }
+
+/* Custom Anime-Style Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary, #0B0404);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary, #BC0100);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 6px rgba(188, 1, 0, 0.6);
+  transition: background 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff1a19;
+  box-shadow: 0 0 8px rgba(255, 26, 25, 0.8), inset 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary, #BC0100) var(--color-primary, #0B0404);
+}
