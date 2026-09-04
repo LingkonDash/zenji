@@ -25,12 +25,12 @@ export default function CollectionHeading({ totalProduct = 0 }) {
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden bg-primary px-6 pb-10 pt-16 sm:px-10 sm:pt-20 lg:px-16"
+      className="relative mx-auto max-w-[1500px] overflow-hidden bg-primary px-6 pb-10 pt-16 sm:px-10 sm:pt-20 lg:px-16"
     >
-      {/* ghost index number, purely tonal */}
+      {/* ghost index number aligned to the 1500px box */}
       <span
         aria-hidden="true"
-        className="ch-num pointer-events-none absolute -right-4 top-4 select-none font-anton leading-none text-white/[0.05] text-[9rem] sm:text-[13rem] lg:text-[17rem]"
+        className="ch-num pointer-events-none absolute right-6 top-0 select-none font-anton leading-none text-white/[0.05] text-[9rem] sm:right-10 sm:text-[13rem] lg:right-16 lg:text-[17rem]"
       >
         {padded}
       </span>

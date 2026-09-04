@@ -88,7 +88,7 @@ export default function CollectionFilterBar({ totalItems = 0 }) {
       style={{ top: navVisible ? NAVBAR_HEIGHT : 0 }}
       className="sticky z-40 border-b border-white/10 bg-primary/95 backdrop-blur transition-[top] duration-300 ease-in-out supports-[backdrop-filter]:bg-primary/85"
     >
-      <div className="flex flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+      <div className="mx-auto max-w-[1600px] flex flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
         <div className="flex flex-wrap items-center gap-2">
           {FILTERS.map((filter) => {
             const isActive = activeFilter === filter.value;
@@ -98,7 +98,7 @@ export default function CollectionFilterBar({ totalItems = 0 }) {
                 type="button"
                 onClick={() => handleFilterClick(filter.value)}
                 aria-pressed={isActive}
-                className={`whitespace-nowrap border px-4 py-2 font-sans text-xs tracking-wide transition-colors duration-200 ${
+                className={`whitespace-nowrap cursor-pointer border px-4 py-2 font-sans text-xs tracking-wide transition-colors duration-200 ${
                   isActive
                     ? "border-secondary bg-secondary text-white"
                     : "border-white/15 bg-transparent text-white/70 hover:border-secondary/50 hover:text-white"

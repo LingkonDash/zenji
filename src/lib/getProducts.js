@@ -2,15 +2,12 @@
  * getProducts — single fetch function for product data.
  *
  * Reads from /data/products.json in the public folder.
- * Use this everywhere products are needed; never duplicate or hardcode product data.
+ * Accepts optional query/searchParams object to filter results.
  *
- * Works in Next.js Server Components (async page/layout) and in regular
- * server-side contexts. The `cache: "force-cache"` option tells Next.js to
- * dedupe and cache the request at build/request time automatically.
- *
- * @returns {Promise<Array>} Resolves to the full products array.
+ * @param {Object} [queryObj] - Filter options { category, q }
+ * @returns {Promise<Array>} Resolves to the filtered products array.
  */
-export async function getProducts() {
+export async function getProducts(queryObj = {}) {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
     (process.env.VERCEL_URL
@@ -25,5 +22,47 @@ export async function getProducts() {
     throw new Error(`Failed to fetch products: ${res.status}`);
   }
 
-  return res.json();
+  let products = await res.json();
+
+  const { category, q } = queryObj || {};
+
+  // Filter by category if specified
+  if (category && category !== "all") {
+    const cat = category.toLowerCase();
+    if (cat === "sale") {
+      products = products.filter(
+        (p) => p.price && p.originalPrice && p.price !== p.originalPrice
+      );
+    } else if (cat === "new_arrival") {
+      products = products.slice(0, 4);
+    } else if (cat === "limited") {
+      products = products.filter((p) =>
+        `${p.title} ${p.description}`.toLowerCase().includes("limited")
+      );
+    } else if (cat === "zangetsu") {
+      products = products.filter((p) =>
+        `${p.title} ${p.description}`.toLowerCase().includes("zangetsu") ||
+        `${p.title} ${p.description}`.toLowerCase().includes("blade") ||
+        `${p.title} ${p.description}`.toLowerCase().includes("demon")
+      );
+    } else {
+      products = products.filter((p) =>
+        p.collection?.toLowerCase() === cat ||
+        `${p.title} ${p.description}`.toLowerCase().includes(cat)
+      );
+    }
+  }
+
+  // Filter by search term q
+  if (q && typeof q === "string" && q.trim() !== "") {
+    const searchTerm = q.trim().toLowerCase();
+    products = products.filter(
+      (p) =>
+        p.title.toLowerCase().includes(searchTerm) ||
+        (p.description && p.description.toLowerCase().includes(searchTerm))
+    );
+  }
+
+  return products;
 }
+
