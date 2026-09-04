@@ -1,6 +1,8 @@
+import { getProducts } from "@/lib/getProducts";
 import AwakeningSection from "@/components/drop/AwakeningSection";
 import CountdownSection from "@/components/drop/CountdownSection";
 import WaitlistSection from "@/components/drop/WaitlistSection";
+import OriginDropSection from "@/components/drop/OriginDropSection";
 
 export const metadata = {
   title: "Awakening Drop — ZENJI Anime Streetwear",
@@ -15,11 +17,14 @@ const DROP_DATE_CONFIG = {
   location: "Australia",
 };
 
-const DropPage = () => {
+const DropPage = async () => {
+  const products = await getProducts();
+
   return (
     <main>
       <AwakeningSection dropConfig={DROP_DATE_CONFIG} />
       <CountdownSection dropConfig={DROP_DATE_CONFIG} />
+      <OriginDropSection products={products.slice(3, 7)} />
       <WaitlistSection />
     </main>
   );

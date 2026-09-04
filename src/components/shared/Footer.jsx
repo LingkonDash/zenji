@@ -321,6 +321,7 @@ export default function Footer() {
       </div>
 
       <div className="relative z-[2] px-6 md:px-16 lg:px-24 pt-20 pb-12">
+        <div className="max-w-[1500px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr_1fr] gap-14 md:gap-8">
           <div data-footer-reveal>
             <Link href="/" className="inline-flex items-center gap-2.5 mb-6 hover:scale-[1.02]">
@@ -376,9 +377,11 @@ export default function Footer() {
             </div>
           ))}
         </div>
+        </div>
       </div>
 
       <div className="relative z-[2] border-t border-white/10 px-6 md:px-16 lg:px-24 py-6">
+        <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <p className="font-sans text-xs text-muted">
             © {mounted ? new Date().getFullYear() : "2026"} ZENJI. All drops are final. No
@@ -409,6 +412,7 @@ export default function Footer() {
               Anime-inspired. Gamer-built. Community-owned.
             </span>
           </div>
+        </div>
         </div>
       </div>
     </footer>
