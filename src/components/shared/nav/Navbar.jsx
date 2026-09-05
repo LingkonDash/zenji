@@ -308,14 +308,14 @@ export default function Navbar() {
               <ShoppingCart className="h-[19px] w-[19px]" strokeWidth={1.75} />
               {cartCount > 0 && <CountBadge count={cartCount} />}
             </div>
-
-            <button
-              type="button"
+            
+            <Link
+              href={'/login'}
               aria-label="Account"
               className="hidden text-white/90 transition-colors hover:text-secondary lg:block"
             >
               <UserRound className="h-[19px] w-[19px] cursor-pointer" strokeWidth={1.75} />
-            </button>
+            </Link>
 
             <button
               type="button"

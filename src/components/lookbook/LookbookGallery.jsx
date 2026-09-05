@@ -7,6 +7,9 @@ import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import WishlistHeart from "../shared/card/WishlistHeart";
+import { toggleWishlist } from "@/lib/cartStore";
+import { useIsWishlisted } from "@/lib/useCartStore";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -248,65 +251,87 @@ export default function LookbookGallery({ products = [] }) {
           className="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3 lg:gap-6"
         >
           {galleryItems.map((item) => {
-            const onSale =
-              Boolean(item.originalPrice) && item.originalPrice !== item.price;
-
             return (
-              <Link
-                key={item.key}
-                href={`/drop/${item.id}`}
-                data-lookbook-card
-                className="group relative mb-4 block break-inside-avoid border border-red-900/30 hover:border-secondary transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary sm:mb-5 lg:mb-6"
-              >
-                <div className="relative overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="block h-auto w-full select-none transition-transform duration-500 group-hover:scale-105"
-                  />
-
-                  <div
-                    data-reveal-curtain
-                    className="absolute inset-0 z-20 origin-bottom scale-y-100 border border-white/5 bg-primary"
-                  />
-
-                  {onSale && (
-                    <span className="absolute left-3 top-3 z-10 border border-red-500/50 bg-secondary px-2.5 py-1 font-sans text-[10px] font-bold tracking-[0.15em] text-white shadow-md">
-                      SALE
-                    </span>
-                  )}
-
-                  <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/50 to-transparent px-4 pb-4 pt-16 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 sm:px-5 sm:pb-5">
-                    <p className="font-sans text-[10px] tracking-[0.2em] text-red-400/90 font-medium">
-                      {item.variant}
-                    </p>
-                    <h3 className="mt-1 font-anton text-lg uppercase leading-tight text-white sm:text-xl">
-                      {item.title}
-                    </h3>
-
-                    <div className="mt-3 flex items-center justify-between gap-3">
-                      <p className="font-sans text-xs text-white">
-                        {item.price}
-                        {onSale && (
-                          <span className="ml-2 text-subtle line-through">
-                            {item.originalPrice}
-                          </span>
-                        )}
-                      </p>
-                      <span className="flex shrink-0 items-center gap-1 border border-secondary bg-secondary/20 px-2.5 py-1 font-sans text-[10px] tracking-[0.15em] text-white transition-colors duration-300 group-hover:bg-secondary">
-                        VIEW
-                        <ArrowUpRight size={12} strokeWidth={2} />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              <LookbookCard key={item.key} item={item} />
             );
           })}
         </div>
       )}
     </div>
+  );
+}
+
+function LookbookCard({ item }) {
+  const onSale =
+    Boolean(item.originalPrice) && item.originalPrice !== item.price;
+  const wishlisted = useIsWishlisted(item?.id);
+
+  const handleToggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(item);
+  };
+
+  return (
+    <Link
+      href={`/drop/${item.id}`}
+      data-lookbook-card
+      className="group relative mb-4 block break-inside-avoid border border-red-900/30 hover:border-secondary transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary sm:mb-5 lg:mb-6"
+    >
+      <div className="relative overflow-hidden">
+        <img
+          src={item.image}
+          alt={item.title}
+          loading="lazy"
+          decoding="async"
+          className="block h-auto w-full select-none transition-transform duration-500 group-hover:scale-105"
+        />
+
+        <div
+          data-reveal-curtain
+          className="absolute inset-0 z-20 origin-bottom scale-y-100 border border-white/5 bg-primary"
+        />
+
+        {onSale && (
+          <span className="absolute left-3 top-3 z-10 border border-red-500/50 bg-secondary px-2.5 py-1 font-sans text-[10px] font-bold tracking-[0.15em] text-white shadow-md">
+            SALE
+          </span>
+        )}
+
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 z-30 flex flex-col justify-between bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 sm:p-5 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100">
+          <div className="flex justify-end">
+            <WishlistHeart
+              wishlisted={wishlisted}
+              handleToggleWishlist={handleToggleWishlist}
+            />
+          </div>
+
+          <div>
+            <p className="font-sans text-[10px] tracking-[0.2em] text-red-400/90 font-medium">
+              {item.variant}
+            </p>
+            <h3 className="mt-1 font-anton text-lg uppercase leading-tight text-white sm:text-xl">
+              {item.title}
+            </h3>
+
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <p className="font-sans text-xs text-white">
+                {item.price}
+                {onSale && (
+                  <span className="ml-2 text-subtle line-through">
+                    {item.originalPrice}
+                  </span>
+                )}
+              </p>
+              <span className="flex shrink-0 items-center gap-1 border border-secondary bg-secondary/20 px-2.5 py-1 font-sans text-[10px] tracking-[0.15em] text-white transition-colors duration-300 group-hover:bg-secondary">
+                VIEW
+                <ArrowUpRight size={12} strokeWidth={2} />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 }

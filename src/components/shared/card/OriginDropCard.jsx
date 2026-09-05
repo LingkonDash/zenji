@@ -25,7 +25,8 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
   if (!item) return null;
 
   const isOnSale = item.price && item.originalPrice && item.price !== item.originalPrice;
-  const imageSrc = item.posterImage || item.bgImage;
+  const posterImg = item.posterImage || item.bgImage;
+  const bgImg = item.bgImage;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -60,13 +61,24 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
 
       {/* Artwork Container */}
       <div className="relative w-full h-[60%] md:h-[65%] overflow-hidden bg-gradient-to-b from-transparent to-[#0B0404]">
-        {imageSrc && (
+        {posterImg && (
           <Image
-            src={imageSrc}
+            src={posterImg}
             alt={item.title || "Drop Item"}
             fill
             sizes="(max-width: 768px) 320px, 380px"
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            className={`object-cover object-center group-hover:scale-105 transition-all duration-700 ease-out ${
+              bgImg ? "group-hover:opacity-0" : ""
+            }`}
+          />
+        )}
+        {bgImg && (
+          <Image
+            src={bgImg}
+            alt={item.title || "Drop Item Background"}
+            fill
+            sizes="(max-width: 768px) 320px, 380px"
+            className="object-cover object-center opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0404] via-transparent to-transparent opacity-90" />
