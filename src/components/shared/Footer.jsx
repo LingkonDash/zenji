@@ -28,7 +28,7 @@ const NAV_COLUMNS = [
     heading: "SUPPORT",
     links: [
       { label: "FAQ", href: "/faq" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "Collaboration", href: "/collaboration" },
       { label: "Review", href: "/review" },
     ],
   },

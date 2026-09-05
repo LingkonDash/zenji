@@ -1,10 +1,11 @@
+import FaqSection from '@/components/faq/FaqSection';
 import React from 'react';
 
 const FaqPage = () => {
     return (
-        <div>
-            FAQ
-        </div>
+        <main>
+            <FaqSection />
+        </main>
     );
 };
 

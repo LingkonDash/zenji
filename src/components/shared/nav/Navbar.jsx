@@ -25,7 +25,7 @@ const NAV_LINKS = [
 
 const MORE_LINKS = [
   { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
+  { label: "Collaboration", href: "/collaboration" },
   { label: "Reviews", href: "/review" },
 ];
 

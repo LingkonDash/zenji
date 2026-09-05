@@ -1,10 +1,11 @@
+import ReviewSection from '@/components/review/ReviewSection';
 import React from 'react';
 
 const ReviewPage = () => {
     return (
-        <div>
-            Review
-        </div>
+        <main>
+            <ReviewSection />
+        </main>
     );
 };
 
