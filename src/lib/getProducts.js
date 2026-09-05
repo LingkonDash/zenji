@@ -56,11 +56,14 @@ export async function getProducts(queryObj = {}) {
   // Filter by search term q
   if (q && typeof q === "string" && q.trim() !== "") {
     const searchTerm = q.trim().toLowerCase();
-    products = products.filter(
-      (p) =>
-        p.title.toLowerCase().includes(searchTerm) ||
-        (p.description && p.description.toLowerCase().includes(searchTerm))
-    );
+    if (searchTerm !== "all") {
+      products = products.filter(
+        (p) =>
+          p.title.toLowerCase().includes(searchTerm) ||
+          (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+          (p.collection && p.collection.toLowerCase().includes(searchTerm))
+      );
+    }
   }
 
   return products;

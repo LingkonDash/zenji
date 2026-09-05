@@ -25,7 +25,7 @@ export default function CollectionHeading({ totalProduct = 0 }) {
   return (
     <section
       ref={containerRef}
-      className="relative mx-auto max-w-[1500px] overflow-hidden bg-primary px-6 pb-10 pt-16 sm:px-10 sm:pt-20 lg:px-16"
+      className="relative mx-auto max-w-[1600px] overflow-hidden bg-primary px-6 pb-10 pt-16 sm:px-10 sm:pt-20 lg:px-16"
     >
       {/* ghost index number aligned to the 1500px box */}
       <span
