@@ -1,3 +1,4 @@
+import OurStory from '@/components/our-story/OurStory';
 import React from 'react';
 
 export const metadata = {
@@ -7,9 +8,9 @@ export const metadata = {
 
 const OurStoryPage = () => {
     return (
-        <div>
-            our story
-        </div>
+        <main>
+            <OurStory />
+        </main>
     );
 };
 

@@ -21,7 +21,7 @@ const NAV_COLUMNS = [
     links: [
       { label: "Lookbook", href: "/lookbook" },
       { label: "Our Story", href: "/our-story" },
-      { label: "Search", href: "/search" },
+      { label: "Search", href: "#" },
     ],
   },
   {

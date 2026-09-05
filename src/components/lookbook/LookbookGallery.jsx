@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
@@ -12,6 +12,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const formatLabel = (value) => value.replace(/_/g, " ");
 const FILTERS = ["all", "front", "back", "on_model"];
+
+const NAVBAR_HEIGHT = 72;
+const SCROLL_THRESHOLD = 40;
 
 export default function LookbookGallery({ products = [] }) {
   const searchParams = useSearchParams();
@@ -171,36 +174,64 @@ export default function LookbookGallery({ products = [] }) {
     }
   };
 
+  const [navVisible, setNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    lastScrollY.current = Math.max(0, window.scrollY);
+
+    const handleScroll = () => {
+      const currentScrollY = Math.max(0, window.scrollY);
+      const diff = currentScrollY - lastScrollY.current;
+
+      if (currentScrollY <= SCROLL_THRESHOLD) setNavVisible(true);
+      else if (diff > 8) setNavVisible(false);
+      else if (diff < -8) setNavVisible(true);
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const countLabel = String(galleryItems.length).padStart(2, "0");
 
   return (
     <div className="w-full">
-      <div className="mb-10 flex flex-col gap-4 border-b border-red-900/30 pb-6 sm:mb-14 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          {FILTERS.map((filter) => {
-            const isActive = filter.toLowerCase() === activeFilter;
-            return (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => handleFilterChange(filter)}
-                aria-pressed={isActive}
-                className={`whitespace-nowrap cursor-pointer border px-4 py-2 font-sans text-xs tracking-wide transition-all duration-300 ${
-                  isActive
-                    ? "border-secondary bg-secondary text-white shadow-[0_0_12px_rgba(229,9,20,0.35)]"
-                    : "border-red-900/40 bg-transparent text-white/70 hover:border-secondary hover:text-white"
-                }`}
-              >
-                {formatLabel(filter).toUpperCase()}
-              </button>
-            );
-          })}
-        </div>
+      <div
+        style={{ top: navVisible ? NAVBAR_HEIGHT : 0 }}
+        className="sticky z-40 mb-10 border-b border-red-900/30 bg-primary/95 backdrop-blur transition-[top] duration-300 ease-in-out supports-[backdrop-filter]:bg-primary/85 pb-6 pt-4 sm:mb-14"
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            {FILTERS.map((filter) => {
+              const isActive = filter.toLowerCase() === activeFilter;
+              return (
+                <button
+                  key={filter}
+                  type="button"
+                  onClick={() => handleFilterChange(filter)}
+                  aria-pressed={isActive}
+                  className={`whitespace-nowrap cursor-pointer border px-4 py-2 font-sans text-xs tracking-wide transition-all duration-300 ${
+                    isActive
+                      ? "border-secondary bg-secondary text-white shadow-[0_0_12px_rgba(229,9,20,0.35)]"
+                      : "border-red-900/40 bg-transparent text-white/70 hover:border-secondary hover:text-white"
+                  }`}
+                >
+                  {formatLabel(filter).toUpperCase()}
+                </button>
+              );
+            })}
+          </div>
 
-        <span className="whitespace-nowrap font-sans text-xs tracking-wide text-subtle">
-          SHOWING {countLabel} {galleryItems.length === 1 ? "PIECE" : "PIECES"}
-        </span>
+          <span className="whitespace-nowrap font-sans text-xs tracking-wide text-subtle">
+            SHOWING {countLabel} {galleryItems.length === 1 ? "PIECE" : "PIECES"}
+          </span>
+        </div>
       </div>
+
 
       {galleryItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center border border-red-900/40 border-l-4 border-l-secondary bg-white/[0.02] px-8 py-20 text-center">
