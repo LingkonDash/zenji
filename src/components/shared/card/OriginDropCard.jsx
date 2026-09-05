@@ -1,9 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ShoppingCart } from "lucide-react";
+import { ArrowUpRight, ShoppingCart, Heart } from "lucide-react";
+import { addToCart } from "@/lib/cartStore";
+import { toggleWishlist } from "@/lib/cartStore";
+import { useIsWishlisted } from "@/lib/useCartStore";
+import WishlistHeart from "./WishlistHeart";
+import AddToCart from "./AddToCart";
 
 /**
  * Reusable OriginDropCard component.
@@ -14,10 +19,27 @@ import { ArrowUpRight, ShoppingCart } from "lucide-react";
  * @param {number} props.totalCount - Total number of items in drop
  */
 export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
+  const wishlisted = useIsWishlisted(item?.id);
+  const [cartPulse, setCartPulse] = useState(false);
+
   if (!item) return null;
 
   const isOnSale = item.price && item.originalPrice && item.price !== item.originalPrice;
   const imageSrc = item.posterImage || item.bgImage;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(item);
+    setCartPulse(true);
+    setTimeout(() => setCartPulse(false), 600);
+  };
+
+  const handleToggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(item);
+  };
 
   return (
     <div className="group relative w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] h-[480px] md:h-[calc(100vh-220px)] max-h-[640px] flex-shrink-0 flex flex-col justify-between bg-[#0B0404] border border-white/10 hover:border-[#BC0100]/60 transition-all duration-500 rounded-none overflow-hidden shadow-2xl">
@@ -32,6 +54,9 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
           </span>
         )}
       </div>
+
+      {/* Wishlist Heart — top-right corner */}
+      <WishlistHeart wishlisted={wishlisted} handleToggleWishlist={handleToggleWishlist} />
 
       {/* Artwork Container */}
       <div className="relative w-full h-[60%] md:h-[65%] overflow-hidden bg-gradient-to-b from-transparent to-[#0B0404]">
@@ -81,13 +106,7 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
             )}
           </div>
 
-          <Link
-            href={`/drop/${item.id}`}
-            className="flex items-center gap-1.5 text-xs font-mono uppercase font-semibold text-white hover:text-[#BC0100] transition-colors"
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span>CLAIM</span>
-          </Link>
+          <AddToCart handleAddToCart={handleAddToCart} cartPulse={cartPulse} />
         </div>
       </div>
     </div>

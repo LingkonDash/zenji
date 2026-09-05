@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
+import { useStoreCounts } from "@/lib/useCartStore";
 
 const NAV_LINKS = [
   { label: "Drop", href: "/drop" },
@@ -31,9 +32,11 @@ const MORE_LINKS = [
 
 const SCROLL_THRESHOLD = 40;
 
-export default function Navbar({ cartCount = 0, wishlistCount = 0 }) {
+export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  const { cartCount, wishlistCount } = useStoreCounts();
 
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);

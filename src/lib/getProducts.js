@@ -7,12 +7,12 @@
  * @param {Object} [queryObj] - Filter options { category, q }
  * @returns {Promise<Array>} Resolves to the filtered products array.
  */
+
 export async function getProducts(queryObj = {}) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000");
+
+  const baseUrl = process.env.BASEURL
+
+  console.log(baseUrl);
 
   const res = await fetch(`${baseUrl}/data/products.json`, {
     cache: "force-cache",
