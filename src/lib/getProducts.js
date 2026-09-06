@@ -12,8 +12,6 @@ export async function getProducts(queryObj = {}) {
 
   const baseUrl = process.env.BASEURL
 
-  console.log(baseUrl);
-
   const res = await fetch(`${baseUrl}/data/products.json`, {
     cache: "force-cache",
   });

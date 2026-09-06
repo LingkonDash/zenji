@@ -137,6 +137,30 @@ export function isInWishlist(productId) {
   return getWishlist().some((p) => p.id === productId);
 }
 
+// ─── Drawer Open / Close Events ─────────────────────────────────────────────
+
+export function openCart() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("cart-drawer-open"));
+}
+
+export function closeCart() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("cart-drawer-close"));
+}
+
+export function onCartDrawerOpen(callback) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("cart-drawer-open", callback);
+  return () => window.removeEventListener("cart-drawer-open", callback);
+}
+
+export function onCartDrawerClose(callback) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("cart-drawer-close", callback);
+  return () => window.removeEventListener("cart-drawer-close", callback);
+}
+
 // ─── React hook helper ──────────────────────────────────────────────────────
 
 /**
@@ -148,3 +172,4 @@ export function onStoreChange(callback) {
   window.addEventListener("cart-store-update", callback);
   return () => window.removeEventListener("cart-store-update", callback);
 }
+

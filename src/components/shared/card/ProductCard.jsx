@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart } from "lucide-react";
-import { addToCart, toggleWishlist } from "@/lib/cartStore";
+import { addToCart, toggleWishlist, openCart } from "@/lib/cartStore";
 import { useIsWishlisted } from "@/lib/useCartStore";
 import WishlistHeart from "./WishlistHeart";
 import AddToCart from "./AddToCart";
@@ -45,6 +45,7 @@ export default function ProductCard({ product, index = 0, href }) {
     e.stopPropagation();
     addToCart(product);
     setCartPulse(true);
+    openCart();
     setTimeout(() => setCartPulse(false), 600);
   };
 
@@ -55,7 +56,7 @@ export default function ProductCard({ product, index = 0, href }) {
   };
 
   return (
-    <div className="group relative shrink-0 w-[280px] sm:w-[340px] md:w-[380px] snap-start border border-white/10 bg-zinc-950/80 hover:border-secondary transition-all duration-500 block z-10 flex flex-col">
+    <div className="group relative shrink-0 w-[320px] md:w-[380px] snap-start border border-white/10 bg-zinc-950/80 hover:border-secondary transition-all duration-500 block z-10 flex flex-col">
       {/* Dynamic Image Canvas */}
       <div className="relative w-full aspect-[4/5] overflow-hidden bg-zinc-900">
         <Link href={linkHref} className="absolute inset-0 z-0">

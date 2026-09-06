@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ShoppingCart, Heart } from "lucide-react";
-import { addToCart } from "@/lib/cartStore";
+import { addToCart, openCart } from "@/lib/cartStore";
 import { toggleWishlist } from "@/lib/cartStore";
 import { useIsWishlisted } from "@/lib/useCartStore";
 import WishlistHeart from "./WishlistHeart";
@@ -33,6 +33,7 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
     e.stopPropagation();
     addToCart(item);
     setCartPulse(true);
+    openCart();
     setTimeout(() => setCartPulse(false), 600);
   };
 
@@ -43,7 +44,7 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
   };
 
   return (
-    <div className="group relative w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px] h-[480px] md:h-[calc(100vh-220px)] max-h-[640px] flex-shrink-0 flex flex-col justify-between bg-[#0B0404] border border-white/10 hover:border-[#BC0100]/60 transition-all duration-500 rounded-none overflow-hidden shadow-2xl">
+    <div className="group relative w-[320px] md:w-[360px] lg:w-[380px] h-[480px] md:h-[calc(100vh-220px)] max-h-[640px] flex-shrink-0 flex flex-col justify-between bg-[#0B0404] border border-white/10 hover:border-[#BC0100]/60 transition-all duration-500 rounded-none overflow-hidden shadow-2xl">
       {/* Badge Overlay */}
       <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
         <span className="px-3 py-1 bg-[#0B0404]/80 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase rounded-none">

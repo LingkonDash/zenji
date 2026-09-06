@@ -50,6 +50,7 @@ export function useIsWishlisted(productId) {
   return wishlisted;
 }
 
+
 /**
  * Track whether a specific product is in the cart, updating in real time.
  */
@@ -67,3 +68,30 @@ export function useIsInCart(productId) {
 
   return inCart;
 }
+
+/**
+ * Hook to manage Cart Drawer visibility and live cart data state.
+ */
+export function useCartDrawer() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    const handleClose = () => setIsOpen(false);
+
+    window.addEventListener("cart-drawer-open", handleOpen);
+    window.addEventListener("cart-drawer-close", handleClose);
+
+    return () => {
+      window.removeEventListener("cart-drawer-open", handleOpen);
+      window.removeEventListener("cart-drawer-close", handleClose);
+    };
+  }, []);
+
+  return {
+    isOpen,
+    open: () => setIsOpen(true),
+    close: () => setIsOpen(false),
+  };
+}
+

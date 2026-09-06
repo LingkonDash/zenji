@@ -5,6 +5,7 @@ import Navbar from "@/components/shared/nav/Navbar";
 import Footer from "@/components/shared/Footer";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import PromoModal from "@/components/shared/PromoModal";
+import CartDrawer from "@/components/shared/cart/CartDrawer";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
           </main>
           <Footer />
           <PromoModal />
+          <CartDrawer />
         </SmoothScrollProvider>
       </body>
     </html>

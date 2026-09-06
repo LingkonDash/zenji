@@ -8,7 +8,10 @@ import { X, Search, Heart, ShoppingBag, ShoppingCart } from "lucide-react";
 import gsap from "gsap";
 import logo from "@/images/zenji-full-outlook.png";
 
+import { openCart } from "@/lib/cartStore";
+
 export default function MobileNav({
+
   open,
   onClose,
   onSearchOpen,
@@ -180,6 +183,10 @@ export default function MobileNav({
           </Link>
           <button
             type="button"
+            onClick={() => {
+              onClose();
+              openCart();
+            }}
             className="flex items-center gap-2 text-[13px] uppercase tracking-[0.08em] text-white/85 transition-colors hover:text-secondary"
           >
             <ShoppingCart className="h-[18px] w-[18px]" strokeWidth={1.75} />

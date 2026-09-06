@@ -16,6 +16,8 @@ import {
 import MobileNav from "./MobileNav";
 import Image from "next/image";
 import { useStoreCounts } from "@/lib/useCartStore";
+import { openCart } from "@/lib/cartStore";
+
 
 const NAV_LINKS = [
   { label: "Drop", href: "/drop" },
@@ -301,13 +303,15 @@ export default function Navbar() {
               {wishlistCount > 0 && <CountBadge count={wishlistCount} />}
             </Link>
 
-            <div
+            <button
+              type="button"
+              onClick={openCart}
               aria-label="Cart"
               className="relative cursor-pointer text-white/90 transition-colors hover:text-secondary"
             >
               <ShoppingCart className="h-[19px] w-[19px]" strokeWidth={1.75} />
               {cartCount > 0 && <CountBadge count={cartCount} />}
-            </div>
+            </button>
             
             <Link
               href={'/login'}
