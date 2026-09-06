@@ -89,7 +89,7 @@ export default function BookStackSection({ data }) {
       {/* Background Wordmark */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.06] flex items-center justify-center">
         <span className="font-anton text-[18vw] tracking-tighter uppercase text-white select-none">
-          LOOKBOOK
+          SALEBOOK
         </span>
       </div>
 
@@ -102,7 +102,7 @@ export default function BookStackSection({ data }) {
           </span>
         </div>
         <h2 className="font-anton text-3xl md:text-5xl uppercase tracking-wider text-white">
-          LOOKBOOK
+          TOP SALEBOOK
         </h2>
         <p className="text-xs font-sans text-subtle mt-1">
           EXPLORE THE COLLECTION — FRAME BY FRAME
