@@ -27,14 +27,14 @@ export default function ProductDetails({ product }) {
         )
         .fromTo(
           "[data-title]",
-          { clipPath: "inset(0 0 0 100%)" },
-          { clipPath: "inset(0 0 0 0%)", duration: 0.6 },
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.5 },
           "-=0.2"
         )
         .fromTo(
           "[data-info-panel] > *:not([data-crumb]):not([data-title])",
           { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.45, stagger: 0.06 },
+          { opacity: 1, y: 0, duration: 0.45, stagger: 0.05 },
           "-=0.25"
         );
     },
@@ -42,11 +42,18 @@ export default function ProductDetails({ product }) {
   );
 
   return (
-    <div ref={containerRef} className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-16">
-      <div className="lg:sticky lg:top-10 lg:self-start">
-        <ProductGallery product={product} />
+    <div className="w-full overflow-x-hidden">
+      <div
+        ref={containerRef}
+        className="mx-auto grid w-full max-w-6xl min-w-0 gap-8 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-16"
+      >
+        <div className="w-full min-w-0 lg:sticky lg:top-10 lg:self-start">
+          <ProductGallery product={product} />
+        </div>
+        <div className="w-full min-w-0">
+          <ProductInfo product={product} />
+        </div>
       </div>
-      <ProductInfo product={product} />
     </div>
   );
 }

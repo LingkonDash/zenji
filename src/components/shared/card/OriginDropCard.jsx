@@ -9,6 +9,7 @@ import { toggleWishlist } from "@/lib/cartStore";
 import { useIsWishlisted } from "@/lib/useCartStore";
 import WishlistHeart from "./WishlistHeart";
 import AddToCart from "./AddToCart";
+import DiscountBadge from "@/components/shared/badge/DiscountBadge";
 
 /**
  * Reusable OriginDropCard component.
@@ -50,12 +51,9 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
         <span className="px-3 py-1 bg-[#0B0404]/80 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-white uppercase rounded-none">
           0{index + 1} / 0{totalCount}
         </span>
-        {isOnSale && (
-          <span className="px-3 py-1 bg-[#BC0100] text-white text-[10px] font-mono font-bold tracking-widest uppercase rounded-none animate-pulse">
-            SALE
-          </span>
-        )}
+        <DiscountBadge price={item.price} originalPrice={item.originalPrice} />
       </div>
+
 
       {/* Wishlist Heart — top-right corner */}
       <WishlistHeart wishlisted={wishlisted} handleToggleWishlist={handleToggleWishlist} />
@@ -87,26 +85,28 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
 
       {/* Content Footer */}
       <div className="p-5 md:p-6 flex flex-col justify-between flex-grow z-10 bg-[#0B0404]">
-        <div>
+        {/* Upper info block — link to drop page */}
+        <Link href={`/drop/${item.id}`} className="group/link block cursor-pointer">
           <div className="flex items-center justify-between gap-2 mb-2">
             <h3 className="font-anton text-xl md:text-2xl uppercase tracking-wide text-white group-hover:text-[#BC0100] transition-colors duration-300">
               {item.title}
             </h3>
-            <Link
-              href={`/drop/${item.id}`}
-              className="p-2 rounded-none border border-white/10 hover:border-[#BC0100] hover:bg-[#BC0100] text-white transition-all duration-300"
+            <span
+              className="p-2 rounded-none border border-white/10 group-hover/link:border-[#BC0100] group-hover/link:bg-[#BC0100] text-white transition-all duration-300"
             >
               <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            </span>
           </div>
           {item.description && (
             <p className="text-xs font-mono text-[#9D9D9D] line-clamp-2 leading-relaxed">
               {item.description}
             </p>
           )}
-        </div>
+        </Link>
 
-        {/* Price and CTA */}
+
+
+        {/* Price and CTA (Outside Link Boundary) */}
         <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-4">
           <div className="flex items-baseline gap-2">
             <span className="font-anton text-xl text-[#BC0100]">
@@ -125,3 +125,5 @@ export default function OriginDropCard({ item, index = 0, totalCount = 1 }) {
     </div>
   );
 }
+
+

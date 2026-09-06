@@ -8,6 +8,7 @@ import { addToCart, toggleWishlist, openCart } from "@/lib/cartStore";
 import { useIsWishlisted } from "@/lib/useCartStore";
 import WishlistHeart from "./WishlistHeart";
 import AddToCart from "./AddToCart";
+import DiscountBadge from "@/components/shared/badge/DiscountBadge";
 
 /**
  * Formats a collection name string like "THE_ORIGIN_DROP" → "The Origin Drop"
@@ -72,10 +73,14 @@ export default function ProductCard({ product, index = 0, href }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
         </Link>
 
-        {/* Index Counter Pill */}
-        <div className="absolute top-4 left-4 z-10 px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white tracking-widest uppercase pointer-events-none">
-          0{index + 1} // LTD
+        {/* Index Counter Pill & Discount Badge */}
+        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+          <div className="px-2.5 py-1 bg-black/80 backdrop-blur-md border border-white/10 font-mono text-[10px] text-white tracking-widest uppercase pointer-events-none">
+            0{index + 1} // LTD
+          </div>
+          <DiscountBadge price={product.price} originalPrice={product.originalPrice} />
         </div>
+
 
         {/* Wishlist Button - Top Right Corner */}
         <WishlistHeart wishlisted={wishlisted} handleToggleWishlist={handleToggleWishlist} />

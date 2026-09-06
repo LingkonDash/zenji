@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import ProductDetails from "@/components/product/ProductDetails";
-// import { getSingleProducts } from "@/lib/product/getSingleProducts";
+import { getProductById } from "@/lib/product/getProductById";
 
 export async function generateMetadata({ params }) {
-  const product = null // await getSingleProducts(params.id);
+  const { id } = await params;
+  const product = await getProductById(id);
   if (!product) return { title: "Product not found — Zenji" };
   return {
     title: `${product.title} — Zenji`,
@@ -12,9 +13,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductPage({ params }) {
-  const product = null // await getSingleProducts(params.id);
-    console.log(product);
-    
+  const { id } = await params;
+  const product = await getProductById(id);
+
   if (!product) {
     notFound();
   }
@@ -25,3 +26,4 @@ export default async function ProductPage({ params }) {
     </main>
   );
 }
+
