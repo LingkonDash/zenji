@@ -7,8 +7,6 @@ export default function Loading() {
   const containerRef = useRef(null);
   const logoRef = useRef(null);
   const textRef = useRef(null);
-  const counterRef = useRef(null);
-  const progressBarRef = useRef(null);
 
   const [isVisible, setIsVisible] = useState(true);
 
@@ -19,7 +17,6 @@ export default function Loading() {
     }
 
     const ctx = gsap.context(() => {
-      const counter = { val: 0 };
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.to(containerRef.current, {
@@ -32,10 +29,7 @@ export default function Loading() {
       });
 
       // 1. Initial State Setup
-      tl.set([logoRef.current, textRef.current], { opacity: 0, y: 20 }).set(
-        progressBarRef.current,
-        { scaleX: 0 }
-      );
+      tl.set([logoRef.current, textRef.current], { opacity: 0, y: 20 });
 
       // 2. Animate Logo and Text Entrance
       tl.to([logoRef.current, textRef.current], {
@@ -46,30 +40,8 @@ export default function Loading() {
         ease: "power3.out",
       })
 
-        // 3. Counter and Progress Bar Animation
-        .to(
-          counter,
-          {
-            val: 100,
-            duration: 1.8,
-            ease: "power2.inOut",
-            onUpdate: () => {
-              if (counterRef.current) {
-                counterRef.current.textContent = `${Math.floor(counter.val)}%`;
-              }
-            },
-          },
-          "-=0.4"
-        )
-        .to(
-          progressBarRef.current,
-          {
-            scaleX: 1,
-            duration: 1.8,
-            ease: "power2.inOut",
-          },
-          "<"
-        )
+        // 3. Hold State
+        .to({}, { duration: 1.2 })
 
         // 4. Subtle Pulse on Completion
         .to(logoRef.current, {
@@ -114,21 +86,8 @@ export default function Loading() {
         </div>
       </div>
 
-      {/* Bottom Progress Bar & Counter */}
-      <div className="flex w-full max-w-xs flex-col gap-2">
-        <div className="flex justify-between items-center text-xs text-subtle">
-          <span>PROGRESS</span>
-          <span ref={counterRef} className="text-secondary">
-            0%
-          </span>
-        </div>
-        <div className="h-[2px] w-full overflow-hidden rounded-full bg-muted/40">
-          <div
-            ref={progressBarRef}
-            className="h-full w-full origin-left bg-secondary"
-          />
-        </div>
-      </div>
+      {/* Bottom Spacer (Invisible to maintain layout balance) */}
+      <div className="h-4 w-full" />
     </div>
   );
 }

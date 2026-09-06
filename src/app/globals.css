@@ -17,6 +17,31 @@ body {
   font-family: var(--font-ibm-plex-mono);
   background-color: var(--color-primary);
   overscroll-behavior-y: none;
+  cursor: url("/new-cursor.png") 5 5, auto;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+[role="button"],
+.cursor-pointer {
+  cursor: url("/jujutsu-pointer.png") 5 5, pointer;
+}
+
+@media (pointer: coarse) {
+  html,
+  body,
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  .cursor-pointer {
+    cursor: auto;
+  }
 }
 
 /* Custom Anime-Style Scrollbar */
