@@ -6,6 +6,7 @@ import Footer from "@/components/shared/Footer";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import PromoModal from "@/components/shared/PromoModal";
 import CartDrawer from "@/components/shared/cart/CartDrawer";
+import ZenjiIntro from "@/components/loading/ZenjiIntro";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -32,14 +33,16 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <SmoothScrollProvider>
-          <AnnouncementBar />
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer />
-          <PromoModal />
-          <CartDrawer />
+          <ZenjiIntro>
+            <AnnouncementBar />
+            <Navbar />
+            <main>
+              {children}
+            </main>
+            <Footer />
+            <PromoModal />
+            <CartDrawer />
+          </ZenjiIntro>
         </SmoothScrollProvider>
       </body>
     </html>

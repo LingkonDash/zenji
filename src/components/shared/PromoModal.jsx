@@ -25,7 +25,7 @@ export default function PromoModal() {
     if (!hasSeenModal) {
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 5000); // 5 seconds delay
+      }, 10000); // 10 seconds delay
 
       return () => clearTimeout(timer);
     }
